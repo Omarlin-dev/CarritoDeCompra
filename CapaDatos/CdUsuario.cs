@@ -55,6 +55,46 @@ namespace CapaDatos
             return lista;
         }
 
+        public bool ComprobarCorreoUsuarioIsFalse(string correo)
+        {
+            bool resultado;
+            string correoComprobar = null;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Conexion.cn))
+                {
+                    string query = "SELECT Correo FROM Usuario WHERE Correo= @Correo";
+
+                    SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@Correo", correo);
+                    cmd.CommandType = CommandType.Text;
+
+                    connection.Open();
+                    using (SqlDataReader dataReader = cmd.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            correoComprobar = dataReader["Correo"].ToString();
+                           
+                        }
+                    }
+                }
+
+                if (correoComprobar != correo)
+                    resultado= true;
+                else
+                    resultado= false;
+            }
+            catch
+            {
+                resultado = false;
+               
+            }
+
+            return resultado;
+        }
+
         public int RegistrarUsuario(Usuario user, out string Mensaje)
         {
             int IdAutoGenerado = 0;
@@ -79,7 +119,14 @@ namespace CapaDatos
                     cmd.ExecuteNonQuery();
 
                     IdAutoGenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
+                    
                     Mensaje = cmd.Parameters["Mensaje"].ToString();
+
+                    if(!ComprobarCorreoUsuarioIsFalse(user.Correo))
+                    {
+                        IdAutoGenerado = 0;
+                        Mensaje = "El correo ya existe";
+                    }
                 }
             }
             catch (Exception ex)
