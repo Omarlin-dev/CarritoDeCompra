@@ -157,7 +157,7 @@
 
             swal({
                 title: "Esta seguro?",
-                text: "Desea eliminar el usuario!",
+                text: "Desea eliminar la categoria!",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonClass: "btn-danger",
@@ -180,7 +180,7 @@
                                 }, 2000)
                                 dataTabla.row(filaSeleccionada).remove().draw();
                             } else {
-                                swal("No se pudo eliminar ", data.mensaje, " danger");
+                                swal("No se pudo eliminar ", data.mensaje, " warning");
                             }
                         },
                         error: function (data) {

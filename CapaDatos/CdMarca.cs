@@ -3,21 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CapaDatos
 {
-    public class CdCategoria
+    public class CdMarca
     {
-        public List<Categoria> Listar()
+        public List<Marca> Listar()
         {
 
-            List<Categoria> lista = new List<Categoria>();
+            List<Marca> lista = new List<Marca>();
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(Conexion.cn))
                 {
-                    string query = "SELECT IdCategoria, Descripcion, Activo FROM Categoria";
+                    string query = "SELECT IdMarca, Descripcion, Activo FROM Marca";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
                     cmd.CommandType = CommandType.Text;
@@ -28,9 +31,9 @@ namespace CapaDatos
                         while (dataReader.Read())
                         {
                             lista.Add(
-                                    new Categoria
+                                    new Marca
                                     {
-                                        IdCategoria = Convert.ToInt32(dataReader["IdCategoria"]),
+                                        IdMarca = Convert.ToInt32(dataReader["IdMarca"]),
                                         Descripcion = dataReader["Descripcion"].ToString(),
                                         Activo = Convert.ToBoolean(dataReader["Activo"])
                                     }
@@ -45,13 +48,13 @@ namespace CapaDatos
             catch
             {
 
-                lista = new List<Categoria>();
+                lista = new List<Marca>();
             }
 
             return lista;
         }
 
-        public int Registrar(Categoria obj, out string Mensaje)
+        public int Registrar(Marca obj, out string Mensaje)
         {
             int IdAutoGenerado = 0;
             Mensaje = string.Empty;
@@ -60,7 +63,7 @@ namespace CapaDatos
             {
                 using (SqlConnection conexion = new SqlConnection(Conexion.cn))
                 {
-                    SqlCommand cmd = new SqlCommand("RegistrarCategoria", conexion);
+                    SqlCommand cmd = new SqlCommand("RegistrarMarca", conexion);
                     cmd.Parameters.AddWithValue("Descripcion", obj.Descripcion);
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
@@ -86,7 +89,7 @@ namespace CapaDatos
             return IdAutoGenerado;
         }
 
-        public bool Editar(Categoria obj, out string Mensaje)
+        public bool Editar(Marca obj, out string Mensaje)
         {
             bool resultado = false;
             Mensaje = string.Empty;
@@ -95,8 +98,8 @@ namespace CapaDatos
             {
                 using (SqlConnection conexion = new SqlConnection(Conexion.cn))
                 {
-                    SqlCommand cmd = new SqlCommand("EditarCategoria", conexion);
-                    cmd.Parameters.AddWithValue("IdCategoria", obj.IdCategoria);
+                    SqlCommand cmd = new SqlCommand("EditarMarca", conexion);
+                    cmd.Parameters.AddWithValue("IdMarca", obj.IdMarca);
                     cmd.Parameters.AddWithValue("Descripcion", obj.Descripcion);
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
@@ -128,9 +131,9 @@ namespace CapaDatos
             try
             {
                 using (SqlConnection connection = new SqlConnection(Conexion.cn))
-                {                    
-                    SqlCommand cmd = new SqlCommand("EliminarCategoria", connection);
-                    cmd.Parameters.AddWithValue("IdCategoria", Id);
+                {
+                    SqlCommand cmd = new SqlCommand("EliminarMarca", connection);
+                    cmd.Parameters.AddWithValue("IdMarca", Id);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;

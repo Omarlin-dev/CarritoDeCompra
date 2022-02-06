@@ -1,9 +1,6 @@
 ﻿using CapaEntidad;
 using CapaNegocio;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace CapaPresentacionAdmin.Controllers
@@ -25,6 +22,8 @@ namespace CapaPresentacionAdmin.Controllers
             return View();
         }
 
+        //******** CATEGORIA *******
+        #region CATEGORIA
         public JsonResult ListarCategoria()
         {
             List<Categoria> oLista = new List<Categoria>();
@@ -64,5 +63,48 @@ namespace CapaPresentacionAdmin.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
 
         }
+        #endregion
+
+        //******** MARCA *******
+        #region MARCA
+        public JsonResult ListarMarca()
+        {
+            List<Marca> oLista = new List<Marca>();
+            oLista = new CnMarca().Listar();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GuardarMarca(Marca obj)
+        {
+            object Resultado;
+            string mensaje = string.Empty;
+
+            if (obj.IdMarca == 0)
+            {
+                Resultado = new CnMarca().Registrar(obj, out mensaje);
+
+            }
+            else
+            {
+                Resultado = new CnMarca().Editar(obj, out mensaje);
+            }
+
+            return Json(new { resultado = Resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult EliminarMarca(int Id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new CnMarca().EliminarUsuario(Id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+
+        }
+        #endregion
     }
 }

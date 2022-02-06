@@ -4,27 +4,27 @@ using System.Collections.Generic;
 
 namespace CapaNegocio
 {
-    public class CnCategoria
+    public class CnMarca
     {
-        private CdCategoria objCapaDato = new CdCategoria();
+        private CdMarca objCapaDato = new CdMarca();
 
-        public List<Categoria> Listar()
+        public List<Marca> Listar()
         {
             return objCapaDato.Listar();
         }
 
-        public int Registrar(Categoria obj, out string Mensaje)
+        public int Registrar(Marca obj, out string Mensaje)
         {
             Mensaje = string.Empty;
 
             if (string.IsNullOrEmpty(obj.Descripcion) || string.IsNullOrWhiteSpace(obj.Descripcion))
             {
-                Mensaje = "La descripcion de la categoria no puede ser vacia";
+                Mensaje = "La descripcion de la marca no puede ser vacia";
             }
 
             if (string.IsNullOrEmpty(Mensaje))
             {
-                return objCapaDato.Registrar(obj, out Mensaje);              
+                return objCapaDato.Registrar(obj, out Mensaje);
             }
             else
             {
@@ -33,13 +33,13 @@ namespace CapaNegocio
 
         }
 
-        public bool Editar(Categoria obj, out string Mensaje)
+        public bool Editar(Marca obj, out string Mensaje)
         {
             Mensaje = string.Empty;
 
             if (string.IsNullOrEmpty(obj.Descripcion) || string.IsNullOrWhiteSpace(obj.Descripcion))
             {
-                Mensaje = "La descripcion de la categoria no puede ser vacia";
+                Mensaje = "La descripcion de la marca no puede ser vacia";
             }
 
             if (string.IsNullOrEmpty(Mensaje))
