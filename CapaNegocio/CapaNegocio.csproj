@@ -45,6 +45,7 @@
     <Compile Include="CnMarca.cs" />
     <Compile Include="CnProducto.cs" />
     <Compile Include="CnRecurso.cs" />
+    <Compile Include="CnReporte.cs" />
     <Compile Include="CnUsuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -191,10 +191,10 @@
                         url: "@Url.Action("EliminarUsuario", "Home")", 
                         type: "POST",
                         data: JSON.stringify({ Id: datos.IdUsuario }),
-                        dataType: "json",
+                          dataType: "json",
                         contentType: "application/json; charset= utf-8",
                         success: function (data) {
-                            debugger;
+                           
                             if (data.resultado) {
                                 setTimeout(function () {
                                     swal("Eliminado con exito!", "Presione el boton!", "success")
@@ -204,8 +204,8 @@
                                 swal("No se pudo eliminar ", data.mensaje, " danger");
                             }
                         },
-                        error: function (data) {
-                            console.log(data);
+                        error: function (error) {
+                            console.log(error);
                         }
                         
                     })

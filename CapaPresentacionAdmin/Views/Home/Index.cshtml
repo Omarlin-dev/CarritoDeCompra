@@ -12,7 +12,7 @@
     <div class="col-xl-3 col-md-6">
         <div class="card bg-success text-white mb-4">
             <div class="card-body">
-            
+
                 <div class="row">
                     <div class="col-sm-9">
                         <h6>Cantidad Clientes</h6>
@@ -22,7 +22,7 @@
                         <i class="fa fa-user fa-2x"></i>
                     </div>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
     <div class="col-xl-3 col-md-6">
@@ -60,4 +60,90 @@
 </div>
 
 
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-tags me-1"></i>
+        Historial de Ventas
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row align-items-end">
+                <div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label">Fecha de Inicio:</label>
+                        <input class="form-control" type="text" id="txtFechaInicio" name="fechaInicio" />
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label">Fecha de Fin:</label>
+                        <input class="form-control" type="text" id="txtFechaFin" name="fechaFin" />
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label">Id Transaccion:</label>
+                        <input class="form-control" type="text" id="txtIdTransaccion" name="idTrasaccion" />
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-primary" id="btnBuscar" type="button"><i class="fas fa-search"></i> Buscar</button>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-success" id="btnBuscar" type="submit"><i class="fas fa-file-excel"></i> Exportar</button>
+                    </div>
+                </div>
 
+            </div>
+        </form>
+        <hr />
+
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="tabla" class="display cell-border" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>Fecha Venta</th>
+                            <th>Cliente</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                            <th>Id Transaccion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+            jQuery.ajax({
+                url: "@Url.Action("VistaDashboard", "Home")",
+                type: "GET",
+                    dataType: "json",
+                contentType: "application/json; charset= utf-8",
+                success: function (data) {
+
+                    let datos = data.resultado;
+
+                    $("#totalCliente").text(datos.TotalCliente);
+                    $("#totalVenta").text(datos.Totalventa);
+                    $("#totalProducto").text(datos.TotalProducto);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+
+            });
+    </script>
+}
