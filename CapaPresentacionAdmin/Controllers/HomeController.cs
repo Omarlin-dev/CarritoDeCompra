@@ -65,6 +65,16 @@ namespace CapaPresentacionAdmin.Controllers
         #endregion
 
         [HttpGet]
+        public JsonResult ListaReporte(string FechaInio, string FechaFin, string IdTransaccion)
+        {
+            List<Reporte> lista = new List<Reporte>(); 
+            lista = new CnReporte().Ventas(FechaInio, FechaFin, IdTransaccion);
+             
+
+            return Json(new { data = lista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public JsonResult VistaDashboard()
         {
             Dashboard obj = new CnReporte().VerDashboard();
