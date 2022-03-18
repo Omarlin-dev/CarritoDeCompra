@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using CapaEntidad;
+﻿using CapaEntidad;
 using CapaNegocio;
+using System.Collections.Generic;
+using System.Data;
+using System.Web.Mvc;
+using ClosedXML.Excel;
+using System.IO;
+using System;
 
 namespace CapaPresentacionAdmin.Controllers
 {
@@ -21,6 +22,7 @@ namespace CapaPresentacionAdmin.Controllers
             return View();
         }
 
+        //Region Usuario
         #region Usuario
         public JsonResult ListarUsuarios()
         {
@@ -83,5 +85,53 @@ namespace CapaPresentacionAdmin.Controllers
             return Json(new { resultado = obj }, JsonRequestBehavior.AllowGet);
         }
 
+
+        [HttpPost]
+        public FileResult ExportarVenta(string FechaInio, string FechaFin, string IdTransaccion) 
+        {
+            List<Reporte> lst = new List<Reporte>();
+
+            lst = new CnReporte().Ventas(FechaInio, FechaFin, IdTransaccion);
+
+            DataTable dt = new DataTable();
+
+            dt.Locale = new System.Globalization.CultureInfo("es-dom");
+            dt.Columns.Add("Fecha Venta", typeof(string));
+            dt.Columns.Add("Cliente", typeof(string));
+            dt.Columns.Add("Producto", typeof(string));
+            dt.Columns.Add("Precio", typeof(decimal));
+            dt.Columns.Add("Cantidad", typeof(int));
+            dt.Columns.Add("Total", typeof(decimal));
+            dt.Columns.Add("IdTransaccion", typeof(string));
+
+            foreach(Reporte rp in lst)
+            {
+                dt.Rows.Add(new object[]
+                {
+                    rp.FechaVenta,
+                    rp.Cliente,
+                    rp.Producto,
+                    rp.Precio,
+                    rp.Cantidad,
+                    rp.Total,
+                    rp.IdTransaccion
+                });
+            }
+
+            dt.TableName = "Datos";
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.presentationml.presentation", "ReporteVenta"+ DateTime.Now.ToString() + ".xlsx");
+                }
+            }
+
+        }
     }
 }
