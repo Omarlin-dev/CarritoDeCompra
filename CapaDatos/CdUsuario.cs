@@ -159,5 +159,68 @@ namespace CapaDatos
             return resultado;
 
         }
+        
+        public bool CambiarClave(int IdUsuario, string NuevaClave, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Conexion.cn))
+                {
+                    string query = "update Usuario set Clave = @NuevaClave, Restablecer = 0 where IdUsuario= @id";
+
+                    SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@id", IdUsuario);
+                    cmd.Parameters.AddWithValue("@NuevaClave", NuevaClave);
+                    cmd.CommandType = CommandType.Text;
+
+                    connection.Open();
+
+                    resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+
+            return resultado;
+
+        }
+
+        public bool RestablecerClave(int IdUsuario, string Clave, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Conexion.cn))
+                {
+                    string query = "update Usuario set Clave = @Clave, Restablecer = 1 where IdUsuario= @id";
+
+                    SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@id", IdUsuario);
+                    cmd.Parameters.AddWithValue("@Clave", Clave);
+
+                    connection.Open();
+
+                    resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+
+            return resultado;
+        }
+
     }
 }
