@@ -9,6 +9,7 @@ using System;
 
 namespace CapaPresentacionAdmin.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         // GET: Home

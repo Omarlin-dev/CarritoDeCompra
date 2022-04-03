@@ -157,7 +157,6 @@ namespace CapaDatos
             }
 
             return resultado;
-
         }
         
         public bool CambiarClave(int IdUsuario, string NuevaClave, out string Mensaje)
@@ -169,7 +168,7 @@ namespace CapaDatos
             {
                 using (SqlConnection connection = new SqlConnection(Conexion.cn))
                 {
-                    string query = "update Usuario set Clave = @NuevaClave, Restablecer = 0 where IdUsuario= @id";
+                    string query = "update Usuario set Clave = @NuevaClave, Reestrablecer = 0 where IdUsuario= @id";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("@id", IdUsuario);
@@ -201,7 +200,7 @@ namespace CapaDatos
             {
                 using (SqlConnection connection = new SqlConnection(Conexion.cn))
                 {
-                    string query = "update Usuario set Clave = @Clave, Restablecer = 1 where IdUsuario= @id";
+                    string query = "update Usuario set Clave = @Clave, Reestrablecer = 1 where IdUsuario= @id";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("@id", IdUsuario);

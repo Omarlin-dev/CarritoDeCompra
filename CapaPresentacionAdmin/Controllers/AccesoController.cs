@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using CapaEntidad;
 using CapaNegocio;
 
+using System.Web.Security;
+
 namespace CapaPresentacionAdmin.Controllers
 {
     public class AccesoController : Controller
@@ -42,6 +44,8 @@ namespace CapaPresentacionAdmin.Controllers
                     TempData["IdUsuario"] = oUsuario.IdUsuario;
                     return RedirectToAction("CambiarClave");
                 }
+
+                FormsAuthentication.SetAuthCookie(oUsuario.Correo, false);
 
                 ViewBag.Error = null;
                 return RedirectToAction("Index", "Home");
@@ -85,8 +89,41 @@ namespace CapaPresentacionAdmin.Controllers
                 TempData["IdUsuario"] = IdUsuario;
                 ViewBag.Error = mensaje;
                 return View();
-
             }
+        }
+
+        [HttpPost]
+        public ActionResult Reestablecer(string correo)
+        {
+            Usuario usuario = new Usuario();
+            usuario = new CnUsuarios().Listar().Where(d => d.Correo == correo).FirstOrDefault();
+
+            if(usuario == null)
+            {
+                ViewBag.Error = "No se encontro un usuario relacionado a ese correo";
+                return View();
+            }
+
+            string mensaje = string.Empty;
+            bool respuesta = new CnUsuarios().RestablecerClave(usuario.IdUsuario, correo, out mensaje);
+
+            if (respuesta)
+            {
+                ViewBag.Error = null;
+                return RedirectToAction("Index", "Acceso");
+            }
+            else
+            {
+                ViewBag.Error = mensaje;
+                return View();
+            }
+        }
+
+        public ActionResult CerrarSesion()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Acceso");
+
         }
     }
 }
